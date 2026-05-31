@@ -1,13 +1,11 @@
 import tkinter as tk
-
+import random
 
 class Vikno:
     def __init__(self,root):
         self.root=root
         self.root.title("Sea Battleship")
         self.root.geometry("500x500")
-        #self.btn= tk.Button(self.root,text="Морський бій")
-        #self.btn.pack(pady=150,padx=150)
 
         self.widget()
 
@@ -82,6 +80,27 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
         else:
             self.robot_buttons[row][col].config(bg="Red",text="X")
             self.robot_data[row][col]=3 #pidbili
+
+    def korabliki_robot(self):
+        sh_size=[4,3,3,2,2,2,1,1,1,1]
+
+        for s in sh_size:
+            placed=False
+            while not placed:
+                napramok=random.choice("Horison","Vertikal") #vibiraem vipadkovi napramok
+                if napramok=="Horison":
+                    r=random.randint(0,9)
+                    c=random.randint(0,9- s +1) #shob ne vilis za pravii krai
+                else:
+                    r=random.randint(0 , 9- s +1)  #shob ne vilis vniz
+                    c=random.randint(0,9)
+
+
+
+
+
+
+
 
 
 if __name__=="__main__":
