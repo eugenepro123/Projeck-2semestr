@@ -96,6 +96,34 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                     c=random.randint(0,9)
 
 
+                if self.perevirka_mizsa(r,c, s, napramok):  #perevirka susidnih klitinok
+                    for i in range(s):
+                        if napramok=="Horison":
+                            self.robot_data[r][c+i]=1
+                        else:
+                            self.robot_data[r+i][c]=1
+                    placed=True #korablik popliv,lets go dali
+
+
+
+    def perevirka_mizsa(self,row,col,size,napramok):      #perevirka chi mozna stavit
+        for i in range(size):
+            m_r=row+(i if napramok=="Vertikal" else 0)
+            m_c=col+(i if napramok=="Horison" else 0 )
+
+            for dr in [-1,0,1]:   #perevirka vsi 8 klitinok navkolo
+                for dc in [-1,0,1]:
+                    ch_r=m_r+dr
+                    ch_c=m_c+dc
+
+                    if 0<=ch_r<10 and 0<=ch_c<10:  #if koordinati v mezah 10
+                        if self.robot_data[ch_r][ch_c]==1:   #korablik vse e
+                            return False
+        return True
+
+
+
+
 
 
 
