@@ -36,6 +36,9 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
         self.robot_buttons=[[None]*10 for i in range(10)]
 
         self.knopa()
+        self.robot_sili=[] #cherga koordinat dla korablika v iakii popali
+
+        self.korabliki_robot()
 
     def knopa(self):
 
@@ -78,8 +81,17 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
             self.graves_buttons[row][col].config(bg="gray")
             self.graves_data[row][col]=1 # tut korablik
         else:
-            self.robot_buttons[row][col].config(bg="Red",text="X")
-            self.robot_data[row][col]=3 #pidbili
+            if self.robot_data[row][col] in[2,3]: #strilba po robotu
+              return
+            if self.robot_data[row][col]==1:   #popali
+               self.robot_buttons[row][col].config(bg="red")
+               self.robot_data[row][col]=3
+            else:
+               self.robot_buttons[row][col].config(bg="darkblue",text="•")
+               self.robot_data[row][col]=2 #lox pomazav
+
+               self.root.after(500, self.ataka_robota)
+
 
     def korabliki_robot(self):
         sh_size=[4,3,3,2,2,2,1,1,1,1]
@@ -87,7 +99,7 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
         for s in sh_size:
             placed=False
             while not placed:
-                napramok=random.choice("Horison","Vertikal") #vibiraem vipadkovi napramok
+                napramok=random.choice(["Horison","Vertikal"]) #vibiraem vipadkovi napramok
                 if napramok=="Horison":
                     r=random.randint(0,9)
                     c=random.randint(0,9- s +1) #shob ne vilis za pravii krai
@@ -120,6 +132,34 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                         if self.robot_data[ch_r][ch_c]==1:   #korablik vse e
                             return False
         return True
+    def ataka_robota(self):
+        r,c= -1,-1
+        while self.robot_sili:
+            poss_r,poss_c=self.robot_sili.pop(0) #beremo pershu sil iz spisku
+            if self.graves_data[poss_r][poss_c] not in [2,3]:   #perevirka chi tuda ne strilali
+                r,c=poss_r,poss_c
+                break
+
+        if r==-1 and c==-1: #vistrel navmania
+            while True:
+                r = random.randint(0, 9)
+                c = random.randint(0, 9)
+                if self.graves_data[r][c] not in [2, 3]:
+                    break
+        if self.graves_data[r][c] == 1:     #obrabotka postrilu
+            self.graves_buttons[r][c].config(bg="darkred", text="x")
+            self.graves_data[r][c] = 3
+            for dr,dc in [(-1,0),(0,-1),(1,0),(0,1)]: #znahodimo susidiv korablika
+                nast_r=r+dr
+                nast_c=c+dc
+                if 0<=nast_r<10 and 0<=nast_c<10: #chi ne vihodit za mezi
+                    if self.graves_data[nast_r][nast_c] not in [2,3]:
+                        self.robot_sili.append((nast_r,nast_c))
+            self.root.after(500, self.ataka_robota)
+        else: #promax
+            self.graves_buttons[r][c].config(bg="blue",text="•")
+            self.graves_data[r][c]=2
+
 
 
 
