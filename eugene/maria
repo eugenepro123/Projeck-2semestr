@@ -45,7 +45,7 @@ class golovnemenu:
         self.kartinka_label.pack_forget()
         self.start.pack_forget()
 
-        self.kolir_label=tk.Label(self.baza,text="ОБЕРИ КОЛІР СВОГО ФЛОТУ",font=("Arial",20,"bold"),bg="#darkblue",fg="white")
+        self.kolir_label=tk.Label(self.baza,text="ОБЕРИ КОЛІР СВОГО ФЛОТУ",font=("Arial",20,"bold"),bg="darkblue",fg="white")
         self.kolir_label.pack(pady=40)
 
         self.btn_pink=tk.Button(self.baza,text="🌸рожевий🌸",font=("Arial",15,"bold"),bg="#lightpink",fg="white",pady=10,relief="flat")
