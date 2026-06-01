@@ -60,4 +60,10 @@ class golovnemenu:
         self.btn_green.config(command=lambda:self.start_pislia_intro("green"))
         self.btn_green.pack(pady=10,fill="x",padx=100)
 
+def start_pislia_intro(self, vibraniy_kolir):
+    self.kolir_label.pack_forget()
+    self.btn_pink.pack_forget()
+    self.btn_yellow.pack_forget()
+    self.btn_green.pack_forget()
+
    
