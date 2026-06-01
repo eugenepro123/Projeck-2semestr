@@ -35,5 +35,9 @@ class golovnemenu:
         self.start.config(command=self.vibir_koloru_vikno)#сама кнопка ''прив1язуємо'' команду і при взаємодії відкривається вікно 
         self.start.pack(pady=30)
 
+ def vibir_koloru_vikno(self):
+        self.nazwa.pack_forget()
+        self.kartinka_label.pack_forget()
+        self.start.pack_forget()
 
    
