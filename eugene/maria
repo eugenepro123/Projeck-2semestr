@@ -30,15 +30,15 @@ class МояГра(War):
         tk.Button(btn_frame,text="так",font=("Arial",15,"bold"),bg="lightgreen", 
             command=lambda:[win.destroy(),self.gaypole.destroy()]).pack(side="left",padx=20)
         tk.Button(btn_frame,text="ні",font=("Arial",12),bg="lightcoral", 
-                  command=self.root.quit).pack(side="left", padx=20)
+                  command=self.root.quit).pack(side="left",padx=20)
 
     def nazat(self,row,col,robot):
         super().nazat(row,col,robot)
         if self.war_start:
             if not any(1 in r for r in self.robot_data):
-                self.outro("скоро людина замінить іі","win.png")
+                self.outro("скоро людина замінить іі","../win.png")
             elif not any(1 in r for r in self.graves_data):
-                self.outro("скоро іі замінить людину","lose.png")
+                self.outro("скоро іі замінить людину","../lose.png")
 
 
 
@@ -58,7 +58,7 @@ class golovnemenu:
         self.nazwa.pack(pady=30) #пркріплює по центру(відступ !-)
 
         try:
-            self.foto=tk.PhotoImage(file="korabel.png")
+            self.foto=tk.PhotoImage(file="../korabel.png")
             self.kartinka_label=tk.Label(self.baza,image=self.foto,bg="darkblue") #щоб не було некрасивої рамки
             self.kartinka_label.pack(pady=10)
         except Exception:
