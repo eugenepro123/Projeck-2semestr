@@ -126,7 +126,7 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                 return #war start i svoe pole nemozna chipati
             if self.graves_data[row][col] == 0 and self.korabliki_gravsa >0:
                 if not self.perevirka_dla_gravsa(row,col):  #perevirka diagonali
-                    self.main_label(text="duze blizko")   #!!!!!!!!
+                    self.main_label.config(text="duze blizko")   #!!!!!!!!
                     return
                 self.graves_data[row][col]=1  #na vremia stavim korablik
                 kor=self.skikikorablikiv()
@@ -140,7 +140,7 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
 
                 if zaBagato:
                     self.graves_data[row][col]=0
-                    self.main_label(text="zabagato korabliv")
+                    self.main_label.config(text="zabagato korabliv")   #!!!!!!!!!!!
                     return
 
                 self.graves_buttons[row][col].config(bg="gray")
