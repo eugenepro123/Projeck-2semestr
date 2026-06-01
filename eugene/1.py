@@ -25,7 +25,7 @@ class Vikno:
 class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
     def __init__(self,root,main_label):
         self.root=root
-        self.mail_label=main_label
+        self.main_label=main_label
         self.gaypole=tk.Toplevel(self.root)
         self.gaypole.title("Gaypole")
         self.gaypole.attributes("-fullscreen",True)
@@ -88,7 +88,7 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                 self.graves_buttons[row][col].config(bg="gray")
                 self.graves_data[row][col]=1 # tut korablik
                 self.korabliki_gravsa-=1
-                self.mail_label.config(text=f"Залишилось розставити палуб:{self.korabliki_gravsa}")
+                self.main_label.config(text=f"Залишилось розставити палуб:{self.korabliki_gravsa}")
                 if self.korabliki_gravsa == 0:
                     self.war_start = True
         else:
