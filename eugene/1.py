@@ -36,7 +36,8 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
         self.graves_buttons=[[None]*10 for i in range(10)]    #zapamiatovuvania knop
         self.robot_buttons=[[None]*10 for i in range(10)]
 
-        self.korabliki_gravsa=20  #zagalna kilkist korablikiv
+        self.ostalos={4:1,3:2,2:3,1:4}
+        self.korabliki_gravsa=20                     #zagalna kilkist korablikiv
         self.war_start=False #pokazue chi war start
 
         self.knopa()
@@ -79,6 +80,16 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                 btn.grid(row=r,column=c,padx=1,pady=1)
 
                 knopi_mat[r][c]=btn
+
+    def perevirka_dla_gravsa(self,row,col):
+        for dr in [-1,0,1]: #proverka kletok vokrug
+            for dc in [-1,0,1]:
+                if dr != 0 and dc != 0:   #perevirka diagonalei
+                    ch_r,ch_c=row+dr,col+dc
+                    if 0 <= ch_r < 10 and 0 <= ch_c < 10:
+                        if self.graves_data[ch_r][ch_c]==1:
+                            return False   #if e korabliki diagonalno
+        return True
 
     def nazat(self,row,col,robot):    #dla togo shob nazimat na polebou
         if not robot:
@@ -160,8 +171,8 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
 
             if self.graves_data[r][c] in [1,3]:  #if v siu klitinsi podbitiu or silii korablik
                 korabl.append((r,c))
-                for dr,ds in [(-1,0),(1,0),(0,-1),(0,1)]:
-                    nr,nc=r+dr,c+ds
+                for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr,nc=r+dr,c+dc
                     if 0<=nr<10 and 0<=nc<10:
                         if (nr,nc) not in visit:
                             queue.append((nr,nc))
