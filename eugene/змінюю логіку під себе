@@ -1,0 +1,21 @@
+import tkinter as tk
+from женя import War
+
+class МояГра(War):
+    def __init__(self,baza,kolir,text):
+        self.vibraniy_kolir=kolir  #зберігає колір  
+        super().__init__(baza,text)
+        #назва змінних не важливі. ВАЖЛИВИЙ ПОРЯДОК(ROOT/MAIN_LABEL)
+        #назад-команда евгенія. перевіряє клітини
+
+    def nazat(self,row,col,robot):
+        #row-номер рядка.col-стовпчик.robot-по якому полю клацнули
+        if not robot:
+            old_war_start=self.war_start  #зберігаємо значення фолс щоб після 20 клітини не був хаос
+            super().nazat(row,col,robot)
+            if self.graves_data[row][col]==1 and not old_war_start:   #1= поставив і війни немає
+                #батонс-змінна жені список усіх клітинок на полі
+                self.graves_buttons[row][col].config(bg=self.vibraniy_kolir) #.до кого ми зверт. усередину. конфіг переналаштувати
+        else:
+            super().nazat(row,col,robot)
+    #ти первіряєш чи можна поставити клітинку, а я фарбую її😛
