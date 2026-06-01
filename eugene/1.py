@@ -91,6 +91,35 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                             return False   #if e korabliki diagonalno
         return True
 
+    def skikikorablikiv(self):  #ogranishenie korabliv
+        visited=set()
+        korabliv={4:0,3:0,2:0,1:0}
+        for r in range(10):
+            for c in range(10): #prohodit vsi 100 klitinok
+                if self.graves_data[r][c]==1 and (r,c) not in visited:   #if znaishli korablik
+                    korabliv=[] #koordinati korabla
+                    queue=[(r,c)]
+
+                    while queue:
+                        curr_r,curr_c=queue.pop(0) #beremo pershy klitinku z cheri
+                        if (curr_r,curr_c) in visited:
+                            continue
+                        visited.add((curr_r,curr_c)) #dobavlaem v nash korabl
+                        korabliv.append((curr_r,curr_c))
+
+                        for dr,dc in [(-1,0),(0,1),(0,-1),(1,0)]:
+                            nr,nc=curr_r+dr,curr_c+dc
+                            if 0<=nr<10 and 0<=nc<10:
+                                if self.graves_data[nr][nc]==1 and (nr,nc) not in visited: #if radom korablik,v chergu uogo
+                                    queue.append((nr,nc))
+                    size=len(korabliv)
+                    if size in korabliv:
+                        korabliv[size]+=1
+                    else: korabliv[size]=99 #if stav bilshe 4
+        return korabliv #povertaim povni korabliki
+
+
+
     def nazat(self,row,col,robot):    #dla togo shob nazimat na polebou
         if not robot:
             if self.war_start:
@@ -119,7 +148,7 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                self.root.after(500, self.ataka_robota)
 
 
-    def korabliki_robot(self):
+    def korabliki_robot(self): #robot roztavliae
         sh_size=[4,3,3,2,2,2,1,1,1,1]
 
         for s in sh_size:
