@@ -19,12 +19,13 @@ class Vikno:
     def pochatok(self):
         self.label.config(text="Treba rozpochaty game")
 
-        self.see=War(self.root)
+        self.see=War(self.root,self.label)
 
 
 class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
-    def __init__(self,root):
+    def __init__(self,root,main_label):
         self.root=root
+        self.mail_label=main_label
         self.gaypole=tk.Toplevel(self.root)
         self.gaypole.title("Gaypole")
         self.gaypole.attributes("-fullscreen",True)
@@ -34,6 +35,9 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
 
         self.graves_buttons=[[None]*10 for i in range(10)]    #zapamiatovuvania knop
         self.robot_buttons=[[None]*10 for i in range(10)]
+
+        self.korabliki_gravsa=20  #zagalna kilkist korablikiv
+        self.war_start=False #pokazue chi war start
 
         self.knopa()
         self.robot_sili=[] #cherga koordinat dla korablika v iakii popali
@@ -78,11 +82,22 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
 
     def nazat(self,row,col,robot):    #dla togo shob nazimat na polebou
         if not robot:
-            self.graves_buttons[row][col].config(bg="gray")
-            self.graves_data[row][col]=1 # tut korablik
+            if self.war_start:
+                return #war start i svoe pole nemozna chipati
+            if self.graves_data[row][col] == 0 and self.korabliki_gravsa >0:
+                self.graves_buttons[row][col].config(bg="gray")
+                self.graves_data[row][col]=1 # tut korablik
+                self.korabliki_gravsa-=1
+                self.mail_label.config(text=f"Залишилось розставити палуб:{self.korabliki_gravsa}")
+                if self.korabliki_gravsa == 0:
+                    self.war_start = True
         else:
+            if not self.war_start:
+                self.main_label.config(text="Treba postavit 20 korablikiv")
+                return
+
             if self.robot_data[row][col] in[2,3]: #strilba po robotu
-              return
+                return
             if self.robot_data[row][col]==1:   #popali
                self.robot_buttons[row][col].config(bg="red")
                self.robot_data[row][col]=3
@@ -132,6 +147,39 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                         if self.robot_data[ch_r][ch_c]==1:   #korablik vse e
                             return False
         return True
+    def bilakorablika(self,start_r,start_c):  # bude znahodit klitinki bila pidbitih korabliv
+        korabl=[]
+        queue=[[start_r,start_c]]
+        visit=set()
+
+        while queue:
+            r,c=queue.pop(0)
+            if(r,c) in visit:
+                continue
+            visit.add((r,c))
+
+            if self.graves_data[r][c] in [1,3]:  #if v siu klitinsi podbitiu or silii korablik
+                korabl.append((r,c))
+                for dr,ds in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr,nc=r+dr,c+ds
+                    if 0<=nr<10 and 0<=nc<10:
+                        if (nr,nc) not in visit:
+                            queue.append((nr,nc))
+        return korabl
+    def obvodka(self,korabl):
+        for r,c in korabl:
+            for dr in [-1,0,1]:
+                for dc in [-1,0,1]:
+                    nr=r+dr
+                    nc=c+dc
+                    if 0<=nr<10 and 0<=nc<10:  #klitinka pusta,robot stavit promax
+                        if self.graves_data[nr][nc]==0:
+                            self.graves_data[nr][nc]=2
+                            self.graves_buttons[nr][nc].config(bg="lightblue")
+
+
+
+
     def ataka_robota(self):
         r,c= -1,-1
         while self.robot_sili:
@@ -149,12 +197,23 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
         if self.graves_data[r][c] == 1:     #obrabotka postrilu
             self.graves_buttons[r][c].config(bg="darkred", text="x")
             self.graves_data[r][c] = 3
-            for dr,dc in [(-1,0),(0,-1),(1,0),(0,1)]: #znahodimo susidiv korablika
-                nast_r=r+dr
-                nast_c=c+dc
-                if 0<=nast_r<10 and 0<=nast_c<10: #chi ne vihodit za mezi
-                    if self.graves_data[nast_r][nast_c] not in [2,3]:
-                        self.robot_sili.append((nast_r,nast_c))
+
+            pot =self.bilakorablika(r,c) #perevirka chi korabel potonuv povnistu
+            potonuv=True
+            for kr,kc in pot:
+                if self.graves_data[kr][kc]==1:
+                    potonuv=False
+            if potonuv:
+                self.obvodka(pot)
+                self.robot_sili.clear()
+            else:
+                for dr,dc in [(-1,0),(0,-1),(1,0),(0,1)]: #znahodimo susidiv korablika
+
+                    nast_r=r+dr
+                    nast_c=c+dc
+                    if 0<=nast_r<10 and 0<=nast_c<10: #chi ne vihodit za mezi
+                        if self.graves_data[nast_r][nast_c] not in [2,3]:
+                            self.robot_sili.append((nast_r,nast_c))
             self.root.after(500, self.ataka_robota)
         else: #promax
             self.graves_buttons[r][c].config(bg="blue",text="•")
