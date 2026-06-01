@@ -52,7 +52,7 @@ class golovnemenu:
         self.btn_pink.config(command=lambda:self.start_pislia_intro("pink"))#lambada-команда в один рядок. запускає не одразу
         self.btn_pink.pack(pady=10,fill="x",padx=100) #fill-розтяг
 
-        self.btn_yellow=tk.Button(self.baza,text="💛жовтий💛",font=("Arial",15,"bold"),bg="lightyellow",fg="white",pady=10,relief="flat")
+        self.btn_yellow=tk.Button(self.baza,text="💛жовтий💛",font=("Arial",15,"bold"),bg="lightyellow",fg="black",pady=10,relief="flat")
         self.btn_yellow.config(command=lambda:self.start_pislia_intro("yellow"))
         self.btn_yellow.pack(pady=10,fill="x",padx=100)
 
