@@ -93,11 +93,11 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
 
     def skikikorablikiv(self):  #ogranishenie korabliv
         visited=set()
-        korabliv={4:0,3:0,2:0,1:0}
+        spisokorabliv={4:0,3:0,2:0,1:0}
         for r in range(10):
             for c in range(10): #prohodit vsi 100 klitinok
                 if self.graves_data[r][c]==1 and (r,c) not in visited:   #if znaishli korablik
-                    korabliv=[] #koordinati korabla
+                    koordinati=[] #koordinati korabla
                     queue=[(r,c)]
 
                     while queue:
@@ -105,18 +105,18 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
                         if (curr_r,curr_c) in visited:
                             continue
                         visited.add((curr_r,curr_c)) #dobavlaem v nash korabl
-                        korabliv.append((curr_r,curr_c))
+                        koordinati.append((curr_r,curr_c))
 
                         for dr,dc in [(-1,0),(0,1),(0,-1),(1,0)]:
                             nr,nc=curr_r+dr,curr_c+dc
                             if 0<=nr<10 and 0<=nc<10:
                                 if self.graves_data[nr][nc]==1 and (nr,nc) not in visited: #if radom korablik,v chergu uogo
                                     queue.append((nr,nc))
-                    size=len(korabliv)
-                    if size in korabliv:
-                        korabliv[size]+=1
-                    else: korabliv[size]=99 #if stav bilshe 4
-        return korabliv #povertaim povni korabliki
+                    size=len(koordinati)
+                    if size in spisokorabliv:
+                        spisokorabliv[size]+=1
+                    else: spisokorabliv[size]=99 #if stav bilshe 4
+        return spisokorabliv #povertaim povni korabliki
 
 
 
@@ -125,12 +125,32 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
             if self.war_start:
                 return #war start i svoe pole nemozna chipati
             if self.graves_data[row][col] == 0 and self.korabliki_gravsa >0:
+                if not self.perevirka_dla_gravsa(row,col):  #perevirka diagonali
+                    self.main_label(text="duze blizko")   #!!!!!!!!
+                    return
+                self.graves_data[row][col]=1  #na vremia stavim korablik
+                kor=self.skikikorablikiv()
+
+                zaBagato=False    #perevirka limitov
+                for size,count in kor.items():
+                    if size > 4:
+                        zaBagato=True
+                    elif count > self.ostalos[size]: #korabli takogo tipa bilshe niz nada
+                        zaBagato=True
+
+                if zaBagato:
+                    self.graves_data[row][col]=0
+                    self.main_label(text="zabagato korabliv")
+                    return
+
                 self.graves_buttons[row][col].config(bg="gray")
-                self.graves_data[row][col]=1 # tut korablik
                 self.korabliki_gravsa-=1
                 self.main_label.config(text=f"Залишилось розставити палуб:{self.korabliki_gravsa}")
                 if self.korabliki_gravsa == 0:
                     self.war_start = True
+                self.main_label.config(text="gra pochalas")
+
+
         else:
             if not self.war_start:
                 self.main_label.config(text="Treba postavit 20 korablikiv")
