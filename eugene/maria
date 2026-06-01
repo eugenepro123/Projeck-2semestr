@@ -69,15 +69,11 @@ class golovnemenu:
         self.start.config(command=self.vibir_koloru_vikno)#сама кнопка ''прив1язуємо'' команду і при взаємодії відкривається вікно 
         self.start.pack(pady=30)
 
- def vibir_koloru_vikno(self):
+     def vibir_koloru_vikno(self):
         self.nazwa.pack_forget()
         self.kartinka_label.pack_forget()
         self.start.pack_forget()
 
- def vibir_koloru_vikno(self):
-        self.nazwa.pack_forget()
-        self.kartinka_label.pack_forget()
-        self.start.pack_forget()
 
         self.kolir_label=tk.Label(self.baza,text="ОБЕРИ КОЛІР СВОГО ФЛОТУ",font=("Arial",20,"bold"),bg="royalblue",fg="white")
         self.kolir_label.pack(pady=40)
@@ -94,11 +90,11 @@ class golovnemenu:
         self.btn_green.config(command=lambda:self.start_pislia_intro("green"))
         self.btn_green.pack(pady=10,fill="x",padx=100)
 
-def start_pislia_intro(self, vibraniy_kolir):
-    self.kolir_label.pack_forget()
-    self.btn_pink.pack_forget()
-    self.btn_yellow.pack_forget()
-    self.btn_green.pack_forget()
+    def start_pislia_intro(self, vibraniy_kolir):
+        self.kolir_label.pack_forget()
+        self.btn_pink.pack_forget()
+        self.btn_yellow.pack_forget()
+        self.btn_green.pack_forget()
 
 self.see = МояГра(self.baza,vibraniy_kolir,self.baza)
 if __name__=="__main__":#наге в пріорітеті
