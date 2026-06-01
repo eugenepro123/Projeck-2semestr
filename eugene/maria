@@ -1,5 +1,5 @@
 import tkinter as tk
-from zhenya import War
+from Zhenya import War
 
 class МояГра(War):
     def __init__(self,baza,kolir,text):
