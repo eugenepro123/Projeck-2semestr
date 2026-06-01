@@ -40,4 +40,24 @@ class golovnemenu:
         self.kartinka_label.pack_forget()
         self.start.pack_forget()
 
+ def vibir_koloru_vikno(self):
+        self.nazwa.pack_forget()
+        self.kartinka_label.pack_forget()
+        self.start.pack_forget()
+
+        self.kolir_label=tk.Label(self.baza,text="ОБЕРИ КОЛІР СВОГО ФЛОТУ",font=("Arial",20,"bold"),bg="#darkblue",fg="white")
+        self.kolir_label.pack(pady=40)
+
+        self.btn_pink=tk.Button(self.baza,text="🌸рожевий🌸",font=("Arial",15,"bold"),bg="#lightpink",fg="white",pady=10,relief="flat")
+        self.btn_pink.config(command=lambda:self.start_pislia_intro("pink"))#lambada-команда в один рядок. запускає не одразу
+        self.btn_pink.pack(pady=10,fill="x",padx=100) #fill-розтяг
+
+        self.btn_yellow=tk.Button(self.baza,text="💛жовтий💛",font=("Arial",15,"bold"),bg="lightyellow",fg="white",pady=10,relief="flat")
+        self.btn_yellow.config(command=lambda:self.start_pislia_intro("yellow"))
+        self.btn_yellow.pack(pady=10,fill="x",padx=100)
+
+        self.btn_green=tk.Button(self.baza,text="💚зелений💚",font=("Arial",15,"bold"),bg="lightgreen",fg="white",pady=10,relief="flat")
+        self.btn_green.config(command=lambda:self.start_pislia_intro("green"))
+        self.btn_green.pack(pady=10,fill="x",padx=100)
+
    
