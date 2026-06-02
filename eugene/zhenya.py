@@ -280,6 +280,10 @@ class War:   #perepisav troshki kod tosho baran and robiv vse v odomu classi
             self.graves_data[r][c]=2
 
 
+
+
+
+
 class МояГра(War):
     def __init__(self,baza,kolir,text):
         self.vibraniy_kolir=kolir  #зберігає колір
@@ -287,8 +291,7 @@ class МояГра(War):
         #назва змінних не важливі. ВАЖЛИВИЙ ПОРЯДОК(ROOT/MAIN_LABEL)
         #назад-команда евгенія. перевіряє клітини
         #self-на постійні данні
-        self.gaypole.attributes("-fullscreen",False)
-        self.gaypole.geometry("1200x800")
+        self.gaypole.attributes("-fullscreen",True)
         self.gaypole.lift()
     def outro(self,resultat,foto_resultat):
         win=tk.Toplevel(self.gaypole)
