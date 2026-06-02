@@ -362,7 +362,7 @@ class golovnemenu:
         self.igroviy_text=tk.Label(self.baza,text="підготовка до бою",font=("Arial",15,"bold"),bg="royalblue",fg="white")
         self.igroviy_text.pack(pady=10)
         self.see=МояГра(self.baza,vibraniy_kolir,self.igroviy_text)
-if __name__=="__main__":#наге в пріорітеті
-    baza=tk.Tk()#саме головне вікно
-    app=golovnemenu(baza)#кидає в деф
-    baza.mainloop()#очікування кліків
+if __name__=="__main__":
+    baza=tk.Tk()
+    app=golovnemenu(baza)
+    baza.mainloop()
