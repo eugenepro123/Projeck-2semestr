@@ -1,0 +1,87 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+from zhenya import War
+class МояГра(War):
+    def __init__(self, baza, kolir, text):
+        self.vibraniy_kolir = kolir
+        super().__init__(baza, text)
+        self.gaypole.attributes("-fullscreen", False)
+        self.gaypole.geometry("1200x800")
+        self.gaypole.lift()
+    def outro(self, resultat, foto_resultat):
+        win = tk.Toplevel(self.gaypole)
+        win.title("кінець")
+        win.geometry("400x450")
+        win.config(bg="white")
+        tk.Label(win, text=resultat, font=("Arial", 20, "bold"), bg="white").pack(pady=10)
+        try:
+            self.img_out = tk.PhotoImage(file=foto_resultat)
+            tk.Label(win, image=self.img_out, bg="white").pack(pady=10)
+        except Exception:
+            tk.Label(win, text="[НЕМА КАРТИНКИ]", bg="white", fg="red").pack(pady=10)
+        tk.Label(win, text="повернутись в головне меню?", font=("Arial", 15), bg="white").pack(pady=10)
+        btn_frame = tk.Frame(win, bg="white")
+        btn_frame.pack(pady=15)
+        tk.Button(btn_frame, text="так", font=("Arial", 15, "bold"), bg="lightgreen", command=lambda: [win.destroy(), self.gaypole.destroy()]).pack(side="left", padx=20)
+        tk.Button(btn_frame, text="ні", font=("Arial", 12), bg="lightcoral", command=self.root.quit).pack(side="left", padx=20)
+    def nazat(self, row, col, robot):
+        super().nazat(row, col, robot)
+        if not robot and not self.war_start:
+            if self.graves_data[row][col] == 1:
+                self.graves_buttons[row][col].config(bg=self.vibraniy_kolir)
+        self.perevirka_kincia()
+    def perevirka_kincia(self):
+        if self.war_start:
+            if not any(1 in r for r in self.robot_data):
+                self.outro("скоро людина замінить іі", "../win.png")
+            elif not any(1 in r for r in self.graves_data):
+                self.outro("скоро іі замінить людину", "../lose.png")
+class golovnemenu:
+    def __init__(self, baza):
+        self.baza = baza
+        self.baza.title("морський бій")
+        self.baza.geometry("1000x1000")
+        self.baza.config(bg="royalblue")
+        self.baza.pack_propagate(False)
+        self.intro_vikno()
+    def intro_vikno(self):
+        self.nazwa = tk.Label(self.baza, text="💥морський бій💥", font=("Arial", 26, "bold"), bg="royalblue", fg="white")
+        self.nazwa.pack(pady=30)
+        try:
+            self.foto = tk.PhotoImage(file="../korabel.png")
+            self.kartinka_label = tk.Label(self.baza, image=self.foto, bg="darkblue")
+            self.kartinka_label.pack(pady=10)
+        except Exception:
+            self.kartinka_label = tk.Label(self.baza, text="[картинка не заванатжилась ಥ_ಥ]", font=15, bg="royalblue", fg="white")
+            self.kartinka_label.pack(pady=20)
+        self.start = tk.Button(self.baza, text="грати", font=("Arial", 15, "bold"), bg="darkgreen", fg="white", padx=20, pady=10, relief="flat")
+        self.start.config(command=self.vibir_koloru_vikno)
+        self.start.pack(pady=30)
+    def vibir_koloru_vikno(self):
+        self.nazwa.pack_forget()
+        self.kartinka_label.pack_forget()
+        self.start.pack_forget()
+        self.kolir_label = tk.Label(self.baza, text="ОБЕРИ КОЛІР СВОГО ФЛОТУ", font=("Arial", 20, "bold"), bg="royalblue", fg="white")
+        self.kolir_label.pack(pady=40)
+        self.btn_pink = tk.Button(self.baza, text="🌸рожевий🌸", font=("Arial", 15, "bold"), bg="lightpink", fg="white", pady=10, relief="flat")
+        self.btn_pink.config(command=lambda: self.start_pislia_intro("pink"))
+        self.btn_pink.pack(pady=10, fill="x", padx=100)
+        self.btn_yellow = tk.Button(self.baza, text="💛жовтий💛", font=("Arial", 15, "bold"), bg="lightyellow", fg="black", pady=10, relief="flat")
+        self.btn_yellow.config(command=lambda: self.start_pislia_intro("yellow"))
+        self.btn_yellow.pack(pady=10, fill="x", padx=100)
+        self.btn_green = tk.Button(self.baza, text="💚зелений💚", font=("Arial", 15, "bold"), bg="lightgreen", fg="white", pady=10, relief="flat")
+        self.btn_green.config(command=lambda: self.start_pislia_intro("green"))
+        self.btn_green.pack(pady=10, fill="x", padx=100)
+    def start_pislia_intro(self, vibraniy_kolir):
+        self.kolir_label.pack_forget()
+        self.btn_pink.pack_forget()
+        self.btn_yellow.pack_forget()
+        self.btn_green.pack_forget()
+        self.igroviy_text = tk.Label(self.baza, text="підготовка до бою", font=("Arial", 15, "bold"), bg="royalblue", fg="white")
+        self.igroviy_text.pack(pady=10)
+        self.see = МояГра(self.baza, vibraniy_kolir, self.igroviy_text)
+if __name__ == "__main__":
+    baza = tk.Tk()
+    app = golovnemenu(baza)
+    baza.mainloop()
